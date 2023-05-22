@@ -14,60 +14,60 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ProductoAjustadoTest {
 	@Test
-	public void testGetPrecio_BaseSinAgregados() {
-	    ProductoMenu base = new ProductoMenu("Hamburguesa", 100);
+	public void testGetPrecio_SinAgregados() {
+	    ProductoMenu base = new ProductoMenu("Hamburguesa", 100000);
 	    ProductoAjustado productoAjustado = new ProductoAjustado(base);
 
-	    int precio = productoAjustado.getPrecio();
+	    long precio = productoAjustado.getPrecio();
 
-	    assertEquals(100, precio);
+	    assertEquals(100000, precio);
 	}
 
 	@Test
-	public void testGetPrecio_BaseConAgregados() {
-	    ProductoMenu base = new ProductoMenu("Hamburguesa", 100);
+	public void testGetPrecio_ConAgregados() {
+	    ProductoMenu base = new ProductoMenu("Hamburguesa", 100000);
 	    ProductoAjustado productoAjustado = new ProductoAjustado(base);
 
 	    ArrayList<Ingrediente> ingredientesAgregados = new ArrayList<>();
-	    ingredientesAgregados.add(new Ingrediente("Queso", 10));
-	    ingredientesAgregados.add(new Ingrediente("Tomate", 5));
+	    ingredientesAgregados.add(new Ingrediente("Queso", 10000));
+	    ingredientesAgregados.add(new Ingrediente("Tomate", 5000));
 
 	    productoAjustado.agregarProductos(ingredientesAgregados, new ArrayList<>());
 
-	    int precio = productoAjustado.getPrecio();
+	    long precio = productoAjustado.getPrecio();
 
-	    assertEquals(115, precio);
+	    assertEquals(115000, precio);
 	}
 
 	@Test
-	public void testGenerarTextoFactura_BaseSinAgregadosNiEliminados() {
-	    ProductoMenu base = new ProductoMenu("Hamburguesa", 100);
+	public void testGenerarTextoFactura_SinAgregadosNiEliminados() {
+	    ProductoMenu base = new ProductoMenu("Hamburguesa", 100000);
 	    ProductoAjustado productoAjustado = new ProductoAjustado(base);
 
 	    String textoFactura = productoAjustado.generarTextoFactura();
 
-	    String expected = "Hamburguesa - $100\nIngredientes agregados: \n";
+	    String expected = "Hamburguesa - $100000\n";
 	    assertEquals(expected, textoFactura);
 	}
 
 	@Test
-	public void testGenerarTextoFactura_BaseConAgregadosYEliminados() {
-	    ProductoMenu base = new ProductoMenu("Hamburguesa", 100);
+	public void testGenerarTextoFactura_ConAgregadosYEliminados() {
+	    ProductoMenu base = new ProductoMenu("Hamburguesa", 100000);
 	    ProductoAjustado productoAjustado = new ProductoAjustado(base);
 
 	    ArrayList<Ingrediente> ingredientesAgregados = new ArrayList<>();
-	    ingredientesAgregados.add(new Ingrediente("Queso", 10));
-	    ingredientesAgregados.add(new Ingrediente("Tomate", 5));
+	    ingredientesAgregados.add(new Ingrediente("Queso", 10000));
+	    ingredientesAgregados.add(new Ingrediente("Tomate", 5000));
 
 	    ArrayList<Ingrediente> ingredientesEliminados = new ArrayList<>();
-	    ingredientesEliminados.add(new Ingrediente("Cebolla", 3));
+	    ingredientesEliminados.add(new Ingrediente("Cebolla", 3000));
 
 	    productoAjustado.agregarProductos(ingredientesAgregados, ingredientesEliminados);
 
 	    String textoFactura = productoAjustado.generarTextoFactura();
 
-	    String expected = "Hamburguesa - $115\nIngredientes eliminados: Cebolla\nIngredientes agregados: \n" +
-	            "Queso - Precio Adicional: $10\nTomate - Precio Adicional: $5\n";
+	    String expected = "Hamburguesa - $115000\nIngredientes eliminados: \nCebolla\nIngredientes agregados: \n" +
+	            "Queso - Precio Adicional: $10000\nTomate - Precio Adicional: $5000\n";
 	    assertEquals(expected, textoFactura);
 	}
 

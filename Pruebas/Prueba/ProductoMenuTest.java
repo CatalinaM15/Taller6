@@ -9,23 +9,23 @@ class ProductoMenuTest {
 
 	@Test
 	public void testGetNombre() {
-	    ProductoMenu productoMenu = new ProductoMenu("Hamburguesa", 100);
+	    ProductoMenu productoMenu = new ProductoMenu("Hamburguesa", 100000);
 	    String nombre = productoMenu.getNombre();
 	    assertEquals("Hamburguesa", nombre);
 	}
 
 	@Test
 	public void testGetPrecio() {
-	    ProductoMenu productoMenu = new ProductoMenu("Hamburguesa", 100);
-	    int precio = productoMenu.getPrecio();
-	    assertEquals(100, precio);
+	    ProductoMenu productoMenu = new ProductoMenu("Hamburguesa", 100000);
+	    long precio = productoMenu.getPrecio();
+	    assertEquals(100000, precio);
 	}
 
 	@Test
 	public void testGenerarTextoFactura() {
-	    ProductoMenu productoMenu = new ProductoMenu("Hamburguesa", 100);
+	    ProductoMenu productoMenu = new ProductoMenu("Hamburguesa", 100000);
 	    String textoFactura = productoMenu.generarTextoFactura();
-	    assertEquals("Hamburguesa - $100\n", textoFactura);
+	    assertEquals("Hamburguesa - $100000\n", textoFactura);
 	}
 
 

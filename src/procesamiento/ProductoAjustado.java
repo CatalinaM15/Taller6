@@ -50,8 +50,8 @@ public class ProductoAjustado implements Producto {
 	}
 
 	@Override
-	public int getPrecio() {
-		int precio = base.getPrecio();
+	public long getPrecio() {
+		long precio = base.getPrecio();
 		if (agregados != null) {
 			for (Ingrediente ingrediente : agregados) {
 				precio += ingrediente.getCostoAdicional();
@@ -66,23 +66,26 @@ public class ProductoAjustado implements Producto {
 		factura.append(String.format("%s - $%d\n", this.getNombre(), this.getPrecio()));
 		if (eliminados != null && eliminados.size() > 0) {
 			factura.append("Ingredientes eliminados: ");
-			
+			factura.append("\n");
+
 			for (Ingrediente ingrediente : eliminados) {
 				factura.append(ingrediente.getNombre() + ", ");
 			}
+			factura.delete(factura.length() - 2, factura.length());
+			factura.append("\n");
 		}
-		factura.delete(factura.length() - 2, factura.length());
-		factura.append("\n");
-		factura.append("Ingredientes agregados: ");
+
 		if (agregados != null && agregados.size() > 0) {
+			factura.append("Ingredientes agregados: ");
+			factura.append("\n");
 			for (Ingrediente ingrediente : agregados) {
 
-				String precios = String.format("\nPrecio Adicional: $%d\n", ingrediente.getCostoAdicional());
+				String precios = String.format("Precio Adicional: $%d\n", ingrediente.getCostoAdicional());
 				factura.append(ingrediente.getNombre() + " - " + precios);
 			}
+			
 		}
-		factura.delete(factura.length() - 2, factura.length());
-		factura.append("\n");
+
 		return factura.toString();
 	}
 

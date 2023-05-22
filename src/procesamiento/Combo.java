@@ -26,8 +26,8 @@ public class Combo implements Producto {
 	}
 
 	@Override
-	public int getPrecio() {
-		int PrecioNeto;
+	public long getPrecio() {
+		long PrecioNeto;
 		PrecioNeto = 0;
 		for (ProductoMenu itemActual : itemsCombo) {
 			PrecioNeto = PrecioNeto + itemActual.getPrecio();

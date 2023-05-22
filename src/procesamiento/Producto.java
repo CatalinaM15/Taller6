@@ -4,7 +4,7 @@ public interface Producto {
 
 	public String getNombre();
 
-	public int getPrecio();
+	public long getPrecio();
 
 	public String generarTextoFactura();
 

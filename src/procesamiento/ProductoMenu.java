@@ -2,7 +2,7 @@ package procesamiento;
 
 public class ProductoMenu implements Producto {
 	private String nombre;
-	private int precioBase;
+	private long precioBase;
 
 	public ProductoMenu(String nombre, int PrecioBase) {
 		this.nombre = nombre;
@@ -15,7 +15,7 @@ public class ProductoMenu implements Producto {
 	}
 
 	@Override
-	public int getPrecio() {
+	public long getPrecio() {
 		return precioBase;
 
 	}

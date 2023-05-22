@@ -24,8 +24,8 @@ public void testGetNombre() {
 @Test
 public void testAgregarItemACombo() {
     Combo combo = new Combo("Combo 1", 0.1);
-    ProductoMenu item1 = new ProductoMenu("Hamburguesa", 100);
-    ProductoMenu item2 = new ProductoMenu("Papas Fritas", 50);
+    ProductoMenu item1 = new ProductoMenu("Hamburguesa", 100000);
+    ProductoMenu item2 = new ProductoMenu("Papas Fritas", 50000);
 
     combo.agregarItemACombo(item1);
     combo.agregarItemACombo(item2);
@@ -39,45 +39,46 @@ public void testAgregarItemACombo() {
 @Test
 public void testGetPrecio_SinDescuento() {
     Combo combo = new Combo("Combo 1", 0.0);
-    ProductoMenu item1 = new ProductoMenu("Hamburguesa", 100);
-    ProductoMenu item2 = new ProductoMenu("Papas Fritas", 50);
+    ProductoMenu item1 = new ProductoMenu("Hamburguesa", 100000);
+    ProductoMenu item2 = new ProductoMenu("Papas Fritas", 50000);
 
     combo.agregarItemACombo(item1);
     combo.agregarItemACombo(item2);
 
-    int precio = combo.getPrecio();
+    long precio = combo.getPrecio();
 
     // El precio debe ser la suma de los precios de los items
-    assertEquals(150, precio);
+    assertEquals(150000, precio);
 }
 
 @Test
 public void testGetPrecio_ConDescuento() {
     Combo combo = new Combo("Combo 1", 0.2);
-    ProductoMenu item1 = new ProductoMenu("Hamburguesa", 100);
-    ProductoMenu item2 = new ProductoMenu("Papas Fritas", 50);
+    ProductoMenu item1 = new ProductoMenu("Hamburguesa", 100000);
+    ProductoMenu item2 = new ProductoMenu("Papas Fritas", 50000);
 
     combo.agregarItemACombo(item1);
     combo.agregarItemACombo(item2);
 
-    int precio = combo.getPrecio();
+    long precio = combo.getPrecio();
 
     // El precio debe ser la suma de los precios de los items con el descuento aplicado
-    assertEquals(120, precio);
+    assertEquals(120000, precio);
 }
 
 @Test
 public void testGenerarTextoFactura() {
     Combo combo = new Combo("Combo 1", 0.1);
-    ProductoMenu item1 = new ProductoMenu("Hamburguesa", 100);
-    ProductoMenu item2 = new ProductoMenu("Papas Fritas", 50);
+    ProductoMenu item1 = new ProductoMenu("Hamburguesa", 100000);
+    ProductoMenu item2 = new ProductoMenu("Papas Fritas", 50000);
 
     combo.agregarItemACombo(item1);
     combo.agregarItemACombo(item2);
 
     String textoFactura = combo.generarTextoFactura();
 
-    String expected = "Combo 1 - $120\n";
+    String expected = "Combo 1 - $135000\n";
+    System.out.println(textoFactura);
     assertEquals(expected, textoFactura);
 }
 

@@ -2,6 +2,10 @@ package Prueba;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
@@ -17,8 +21,8 @@ class PedidoTest {
 	@Test
 	void testAgregarProducto_SinRestriccion() throws RestriccionPrecioException {
 		Pedido pedido = new Pedido("Cliente 1", "Dirección 1");
-		ProductoMenu item1 = new ProductoMenu("Hamburguesa", 100);
-		ProductoMenu item2 = new ProductoMenu("Papas Fritas", 50);
+		ProductoMenu item1 = new ProductoMenu("Hamburguesa", 100000);
+		ProductoMenu item2 = new ProductoMenu("Papas Fritas", 10000);
 
 		pedido.agregarProducto(item1);
 		pedido.agregarProducto(item2);
@@ -31,29 +35,28 @@ class PedidoTest {
 	@Test
 	void testAgregarProducto_ConRestriccion() {
 		Pedido pedido = new Pedido("Cliente 1", "Dirección 1");
-		ProductoMenu item1 = new ProductoMenu("Hamburguesa", 100);
-		ProductoMenu item2 = new ProductoMenu("Papas Fritas", 1000);
+		ProductoMenu item1 = new ProductoMenu("Hamburguesa", 50000);
+		ProductoMenu item2 = new ProductoMenu("Papas Fritas", 300000);
 
 		RestriccionPrecioException exception = assertThrows(RestriccionPrecioException.class, () -> {
 			pedido.agregarProducto(item1);
 			pedido.agregarProducto(item2);
 		});
 
-		assertEquals("El precio total del pedido supera el límite permitido.", exception.getMessage());
-		assertEquals(item1, exception.getProducto());
+		assertEquals("El Producto " +item2.getNombre()+ " no ha sido posible de agregar al pedido ya que superan los 150.000", exception.getMessage());
+		assertEquals(item2, exception.getProducto());
 		assertEquals(1, pedido.getItemsPedido().size());
-		assertEquals(item1, pedido.getItemsPedido().get(0));
 	}
 
 	@Test
 	void testAgregarModificado() {
 		Pedido pedido = new Pedido("Cliente 1", "Dirección 1");
-		ProductoMenu item1 = new ProductoMenu("Hamburguesa", 100);
+		ProductoMenu item1 = new ProductoMenu("Hamburguesa", 100000);
 		ArrayList<Ingrediente> ingredientesA = new ArrayList<>();
-		ingredientesA.add(new Ingrediente("Queso", 10));
-		ingredientesA.add(new Ingrediente("Tomate", 5));
+		ingredientesA.add(new Ingrediente("Queso", 10000));
+		ingredientesA.add(new Ingrediente("Tomate", 5000));
 		ArrayList<Ingrediente> ingredientesE = new ArrayList<>();
-		ingredientesE.add(new Ingrediente("Cebolla", 2));
+		ingredientesE.add(new Ingrediente("Cebolla", 2000));
 
 		pedido.agregarModificado(item1, ingredientesA, ingredientesE);
 
@@ -64,8 +67,8 @@ class PedidoTest {
 	@Test
 	void testGenerarTextoFactura() throws RestriccionPrecioException {
 		Pedido pedido = new Pedido("Cliente 1", "Dirección 1");
-		ProductoMenu item1 = new ProductoMenu("Hamburguesa", 100);
-		ProductoMenu item2 = new ProductoMenu("Papas Fritas", 50);
+		ProductoMenu item1 = new ProductoMenu("Hamburguesa", 100000);
+		ProductoMenu item2 = new ProductoMenu("Papas Fritas", 10000);
 
 		pedido.agregarProducto(item1);
 		pedido.agregarProducto(item2);
@@ -73,23 +76,43 @@ class PedidoTest {
 		String factura = pedido.generarTextoFactura();
 
 		String expected = "ID No. 1\n" + "Nombre Cliente: Cliente 1\n" + "Direccion Cliente: Dirección 1\n"
-				+ "Productos:\n" + "Hamburguesa - $100\n" + "Papas Fritas - $50\n" + "Precio neto: $150\n"
-				+ "IVA: $28.50\n" + "Total: $178";
+				+ "Productos:\n" + "Hamburguesa - $100000\n" + "Papas Fritas - $10000\n" + "Precio neto: $110000\n"
+				+ "IVA: $20900,00\n" + "Total: $130900";
 
 		assertEquals(expected, factura);
 	}
 
 	@Test
-	void testGuardarFactura() throws RestriccionPrecioException {
+	void testGuardarFactura() throws RestriccionPrecioException, FileNotFoundException, IOException {
 		Pedido pedido = new Pedido("Cliente 1", "Dirección 1");
-		ProductoMenu item1 = new ProductoMenu("Hamburguesa", 100);
-		ProductoMenu item2 = new ProductoMenu("Papas Fritas", 50);
+		ProductoMenu item1 = new ProductoMenu("Hamburguesa", 100000);
+		ProductoMenu item2 = new ProductoMenu("Papas Fritas", 10000);
 
 		pedido.agregarProducto(item1);
 		pedido.agregarProducto(item2);
-
-		// Realizar la prueba sin verificar la escritura en archivo
 		pedido.guardarFactura();
+
+		// Leer el contenido del archivo de factura
+		try (BufferedReader reader = new BufferedReader(new FileReader("data/facturas.txt"))) {
+			StringBuilder contenidoBuilder = new StringBuilder();
+			String linea;
+			while ((linea = reader.readLine()) != null) {
+				if (linea.contains(";")) {
+		            contenidoBuilder.append(linea.substring(0, linea.indexOf(';')));
+		            break;
+		        }
+				contenidoBuilder.append(linea).append("\n");
+			}
+			String contenidoFactura = contenidoBuilder.toString().trim();
+
+			// Verificar si el contenido del archivo es el esperado
+			String facturaEsperada =  "ID No. 1\n" + "Nombre Cliente: Cliente 1\n" + "Direccion Cliente: Dirección 1\n"
+					+ "Productos:\n" + "Hamburguesa - $100000\n" + "Papas Fritas - $10000\n" + "Precio neto: $110000\n"
+					+ "IVA: $20900,00\n" + "Total: $130900"; // Coloca aquí el contenido esperado de la factura
+			assertEquals(facturaEsperada, contenidoFactura);
+
+		}
+
 	}
 
 }

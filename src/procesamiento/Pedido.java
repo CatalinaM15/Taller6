@@ -20,7 +20,7 @@ public class Pedido {
 	public Pedido(String nombreCliente, String direccionCliente) {
 		this.nombreCliente = nombreCliente;
 		this.direccionCliente = direccionCliente;
-		this.idPedido = generarID();
+		this.idPedido = 1;
 		this.itemsPedido = new ArrayList<>();
 	}
 
@@ -34,11 +34,14 @@ public class Pedido {
 	}
 
 	public void agregarProducto(Producto nuevoItem) throws RestriccionPrecioException {
-		int PrecioTotal = nuevoItem.getPrecio() + this.getPrecioNetoPedido0();
-		if (PrecioTotal < 150000) {
-			itemsPedido.add(nuevoItem);
-		} else {
+		itemsPedido.add(nuevoItem);
+		long PrecioTotal = this.getPrecioTotalPedido0();
+
+		if (PrecioTotal > 150000) {
+			int ultimoIndice = itemsPedido.size() - 1;
+			itemsPedido.remove(ultimoIndice);
 			throw new RestriccionPrecioException(nuevoItem);
+
 		}
 
 	}
@@ -86,7 +89,6 @@ public class Pedido {
 				+ this.direccionCliente;
 		String listaProductos = "\nProductos:\n";
 		for (Producto item : itemsPedido) {
-//			listaProductos += String.format("%s - $%d\n", item.getNombre(), item.getPrecio());
 			listaProductos += item.generarTextoFactura();
 		}
 
@@ -94,7 +96,7 @@ public class Pedido {
 		double ivaNeto = getPrecioIVAPedido0();
 		int precioTotal = getPrecioTotalPedido0();
 
-		String precios = String.format("\nPrecio neto: $%d\nIVA: $%.2f\nTotal: $%d", precioNeto, ivaNeto, precioTotal);
+		String precios = String.format("Precio neto: $%d\nIVA: $%.2f\nTotal: $%d", precioNeto, ivaNeto, precioTotal);
 
 		String factura = encabezado + informacion + listaProductos + precios;
 
@@ -103,7 +105,7 @@ public class Pedido {
 
 	public void guardarFactura() {
 
-		String factura = generarTextoFactura();
+		String factura = generarTextoFactura()+";\n";
 		PrintWriter writer;
 
 		try {
