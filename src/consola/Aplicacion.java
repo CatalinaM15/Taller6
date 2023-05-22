@@ -60,7 +60,7 @@ public class Aplicacion {
 
 	}
 
-	public void funciones() {
+	public void funciones() throws IOException {
 
 		boolean continuar = true;
 		while (continuar) {
@@ -123,7 +123,7 @@ public class Aplicacion {
 		return null;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		Aplicacion app = new Aplicacion();
 		app.restaurante = new Restaurante();
 		app.restaurante.cargarinformacionRestaurante();

@@ -1,5 +1,7 @@
 package procesamiento;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 //import java.io.BufferedReader;
 //import java.io.FileReader;
 import java.io.FileWriter;
@@ -103,14 +105,15 @@ public class Pedido {
 		return factura;
 	}
 
-	public void guardarFactura() {
+	public void guardarFactura() throws IOException {
 
-		String factura = generarTextoFactura()+";\n";
+		String factura = generarTextoFactura() + ";\n";
 		PrintWriter writer;
-
 		try {
 			writer = new PrintWriter(new FileWriter("data/facturas.txt", true));
-			writer.print(factura);
+
+//            writer.write(contenidoAnterior);
+			writer.write(factura);
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();

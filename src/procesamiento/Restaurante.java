@@ -40,7 +40,7 @@ public class Restaurante {
 
 	}
 
-	public void cerrarYGuardarPedido0() {
+	public void cerrarYGuardarPedido0() throws IOException {
 		pedidoEnCurso.guardarFactura();
 	}
 

@@ -93,26 +93,27 @@ class PedidoTest {
 		pedido.guardarFactura();
 
 		// Leer el contenido del archivo de factura
-		try (BufferedReader reader = new BufferedReader(new FileReader("data/facturas.txt"))) {
-			StringBuilder contenidoBuilder = new StringBuilder();
-			String linea;
-			while ((linea = reader.readLine()) != null) {
-				if (linea.contains(";")) {
-		            contenidoBuilder.append(linea.substring(0, linea.indexOf(';')));
-		            break;
-		        }
-				contenidoBuilder.append(linea).append("\n");
-			}
-			String contenidoFactura = contenidoBuilder.toString().trim();
+		String archivoFactura = "data/facturas.txt";
+        String ultimoTramo = "";
+        String linea;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(archivoFactura))) {
+            while ((linea = reader.readLine()) != null) {
+                if (linea.startsWith("ID No.")) {
+                    ultimoTramo = "";
+                }
+                ultimoTramo += linea + "\n";
+            }
+        }
 
 			// Verificar si el contenido del archivo es el esperado
 			String facturaEsperada =  "ID No. 1\n" + "Nombre Cliente: Cliente 1\n" + "Direccion Cliente: Dirección 1\n"
 					+ "Productos:\n" + "Hamburguesa - $100000\n" + "Papas Fritas - $10000\n" + "Precio neto: $110000\n"
-					+ "IVA: $20900,00\n" + "Total: $130900"; // Coloca aquí el contenido esperado de la factura
-			assertEquals(facturaEsperada, contenidoFactura);
+					+ "IVA: $20900,00\n" + "Total: $130900;\n"; // Coloca aquí el contenido esperado de la factura
+			assertEquals(facturaEsperada, ultimoTramo);
 
 		}
 
 	}
 
-}
+

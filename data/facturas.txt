@@ -1,4 +1,4 @@
-ID No. 1
+ID No. 3
 Nombre Cliente: Cliente 1
 Direccion Cliente: Dirección 1
 Productos:
@@ -7,7 +7,7 @@ Papas Fritas - $10000
 Precio neto: $110000
 IVA: $20900,00
 Total: $130900;
-ID No. 1
+ID No. 2
 Nombre Cliente: Cliente 1
 Direccion Cliente: Dirección 1
 Productos:
@@ -16,7 +16,7 @@ Papas Fritas - $10000
 Precio neto: $110000
 IVA: $20900,00
 Total: $130900;
-ID No. 1
+ID No. 5
 Nombre Cliente: Cliente 1
 Direccion Cliente: Dirección 1
 Productos:
